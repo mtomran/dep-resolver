@@ -1,0 +1,26 @@
+{
+  "name": "dep-resolver",
+  "version": "1.0.0",
+  "description": "Asyncronous Dependency Resolver",
+  "main": "app.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mtomran/dep-resolver.git"
+  },
+  "keywords": [
+    "async",
+    "asyncronous",
+    "dependency",
+    "resolver",
+    "resolve"
+  ],
+  "author": "Masoud Omran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mtomran/dep-resolver/issues"
+  },
+  "homepage": "https://github.com/mtomran/dep-resolver#readme"
+}

@@ -1,0 +1,11 @@
+const depResolver= require("./app.js");
+console.log("Running Dependency Test..");
+const a= depResolver.buildNode("a");
+const b= depResolver.buildNode("b");
+const c= depResolver.buildNode("c");
+const d= depResolver.buildNode("d");
+depResolver.addDependencyLink(a, b);
+depResolver.addDependencyLink(b, c);
+depResolver.addDependencyLink(c, d);
+const sorted= depResolver.sortAll();
+console.log("sorted list:", sorted);
