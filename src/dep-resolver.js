@@ -1,4 +1,5 @@
 const Node= require("./node");
+const _= require("lodash");
 class DepResolver{
     constructor(){
     }
@@ -11,22 +12,39 @@ class DepResolver{
         Node.reset();
     };
 
+    getNode(id){
+        return Node.nodes[id];
+    }
+
+    getTitle(id){
+        return Node.nodes[id].title;
+    }
+
+    getRunFunc(id){
+        return Node.nodes[id].runFunc;
+    }
+
     sortAll(){
+        const $this= this;
         const sorted= []
         const visitedList= [];
-        for(let nodeId in Node.nodes){
-            Node.degree[nodeId]= (Node.adjacents[nodeId])? Object.keys(Node.adjacents[nodeId]).length : 0;
+        _.each(Node.getAll(), (node)=>{
+            const nodeId= node.id;
+            //Node.degree[nodeId]= (Node.adjacents[nodeId])? Object.keys(Node.adjacents[nodeId]).length : 0;
             if(Node.degree[nodeId] == 0){
                 visitedList.push(nodeId);
             }
-        }
+        });
+
         console.log("data structures", visitedList, Node.adjacents, Node.adjacentsReverse, Node.degree);
-        function resolve(visitedList){
+        function resolve(visitedList){       
             return Promise.map(visitedList, (visited)=>{
-                const nodeId= visitedList;
-                return Node.nodes[nodeId].runFunc()
+                const nodeId= visited;
+                console.log(">>>", $this.getTitle(nodeId),"visited");           
+                return $this.getRunFunc(nodeId)()
                 .then(()=>{
-                    sorted.push(nodeId);
+                    console.log("<<<", $this.getTitle(nodeId), "resolved");
+                    sorted.push(nodeId);                    
                     const visitedList= [];
                     for(let adjId in Node.adjacentsReverse[nodeId]){
                         Node.degree[adjId]-= 1;
@@ -34,12 +52,14 @@ class DepResolver{
                             visitedList.push(adjId);                            
                         }
                     }
+                    if(!visitedList.length) return Promise.resolve();
+
                     return resolve(visitedList);
                 });            
             });
         }
         
-        return resolve()
+        return resolve(visitedList)
         .then(()=>{
             for(let nodeId in Node.degree){
                 if (Node.degree[nodeId] > 0){
@@ -52,13 +72,8 @@ class DepResolver{
                 titles.push(Node.nodes[sorted[i]].title);
             };
             return titles;
-        });
-
-        
-        
+        });       
     }
 }
-
-
 
 module.exports= DepResolver;
