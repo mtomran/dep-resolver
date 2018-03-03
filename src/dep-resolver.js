@@ -1,70 +1,61 @@
-
+const Node= require("./node");
 class DepResolver{
     constructor(){
-        this.nodes= {};
-        this.adjacents= {};
-        this.adjacentsReverse= {};
-        this.degree= {};
-        this._id= 0;
     }
 
-    getNewId(){
-        this._id+= 1;
-        return this._id;
+    addNode(title, runFunc){
+        return new Node(title, runFunc);
     }
 
-    buildNode(title, runFunc){
-        const $this= this;
-        const id= $this.getNewId();
-        const node= {
-            id: id,
-            title: title,
-            runFunc: runFunc
-        }
-        this.nodes[id]= node;
-        return node;
-    }
-
-    addDependencyLink(source, dest){
-        this.adjacents[source.id]= this.adjacents[source.id] || {};    
-        this.adjacents[source.id][dest.id]= true;
-        this.adjacentsReverse[dest.id]= this.adjacentsReverse[dest.id] || {}; 
-        this.adjacentsReverse[dest.id][source.id]= true;
-    }
+    reset(){
+        Node.reset();
+    };
 
     sortAll(){
         const sorted= []
-        const resolved= [];
-        for(let nodeId in this.nodes){
-            this.degree[nodeId]= (this.adjacents[nodeId])? Object.keys(this.adjacents[nodeId]).length : 0;
-            if(this.degree[nodeId] == 0){
-                resolved.push(nodeId);
+        const visitedList= [];
+        for(let nodeId in Node.nodes){
+            Node.degree[nodeId]= (Node.adjacents[nodeId])? Object.keys(Node.adjacents[nodeId]).length : 0;
+            if(Node.degree[nodeId] == 0){
+                visitedList.push(nodeId);
             }
         }
-        console.log("data structures", resolved, this.adjacents, this.adjacentsReverse, this.degree);
-        while(resolved.length != 0){
-            const nodeId= resolved.pop();
-            //console.log("poped node", nodeId);
-            sorted.push(nodeId);
-            for(let adjId in this.adjacentsReverse[nodeId]){
-                this.degree[adjId]-= 1;
-                if(this.degree[adjId] == 0){
-                    resolved.push(adjId);
-                }
-            }
+        console.log("data structures", visitedList, Node.adjacents, Node.adjacentsReverse, Node.degree);
+        function resolve(visitedList){
+            return Promise.map(visitedList, (visited)=>{
+                const nodeId= visitedList;
+                return Node.nodes[nodeId].runFunc()
+                .then(()=>{
+                    sorted.push(nodeId);
+                    const visitedList= [];
+                    for(let adjId in Node.adjacentsReverse[nodeId]){
+                        Node.degree[adjId]-= 1;
+                        if(Node.degree[adjId] == 0){
+                            visitedList.push(adjId);                            
+                        }
+                    }
+                    return resolve(visitedList);
+                });            
+            });
         }
         
-        for(let nodeId in this.degree){
-            if (this.degree[nodeId] > 0){
-                return Error("The dependency graph has a cycle.");
+        return resolve()
+        .then(()=>{
+            for(let nodeId in Node.degree){
+                if (Node.degree[nodeId] > 0){
+                    return Error("The dependency graph has a cycle.");
+                }
             }
-        }
+    
+            const titles= [];
+            for (let i=0; i< sorted.length; ++i){
+                titles.push(Node.nodes[sorted[i]].title);
+            };
+            return titles;
+        });
 
-        const titles= [];
-        for (let i=0; i< sorted.length; ++i){
-            titles.push(this.nodes[sorted[i]].title);
-        };
-        return titles;
+        
+        
     }
 }
 

@@ -18,6 +18,9 @@
     "resolve"
   ],
   "author": "Masoud Omran",
+  "dependencies": {
+    "bluebird": "~3.5.1"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mtomran/dep-resolver/issues"
