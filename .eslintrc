@@ -1,0 +1,53 @@
+{
+    "rules": {
+        "indent": [
+            2,
+            "tab",
+            { "MemberExpression": 0 }
+        ],
+        "camelcase": [2, {
+                "properties": "never"
+            }
+        ],
+        "quotes": [
+            2,
+            "double"
+        ],
+        "linebreak-style": [
+            0,
+            "windows" 
+        ],
+        "semi": [
+            2,
+            "always"
+        ],
+        "comma-dangle": [ 
+            "error", 
+            "never"
+        ],
+        "comma-spacing": [
+            "error", 
+            { 
+                "before": false,
+                "after": true
+            }
+        ],
+        "key-spacing": [
+            "error", 
+            { 
+                "beforeColon": false,
+                "afterColon": true,
+                "mode": "minimum"
+            }
+        ]
+    },
+    "env": {
+        "es6": true,
+        "node": true,
+        "mocha": true,
+        "jasmine": true
+    },
+    "extends": "eslint:recommended",  
+    "plugins": [
+    ]
+}

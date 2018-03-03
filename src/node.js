@@ -1,74 +1,119 @@
-let id= 0;
-let nodes= {};
-let outgoing= {};
-let incoming= {};
-let degree= {}
 const _= require("lodash");
-class Node{
-    constructor(title, runFunc){        
-        this.id= this.getNewId();
-        this.title= title;
-        this.runFunc= runFunc
-        degree[this.id]= 0;
-        nodes[this.id]= this;
-    }  
+/**
+ * a unique id assigned to nodes
+ */
+let id= 0;
 
-    static reset(){
-        nodes= {};
-        outgoing= {};
-        incoming= {};
-        degree= {};
-        id= 0;
-    }
+/**
+ * list of all nodes keyed by their id
+ */
+let nodes= {};
 
-    getNewId(){
-        id+= 1;
-        return id;
-    }
+/**
+ * list of all outgoing nodes keyed by source and destination node ids
+ */
+let outgoing= {};
 
-    dependsOn(node){
-        outgoing[this.id]= outgoing[this.id] || {};
-        
-        if(!outgoing[this.id][node.id]){
-            outgoing[this.id][node.id]= true;
-            degree[this.id]+= 1;
-        }
+/**
+ * list of all incoming nodes keyed by destination and source node ids
+ */
+let incoming= {};
 
-        incoming[node.id]= incoming[node.id] || {}; 
-        incoming[node.id][this.id]= true;
-    }
+/**
+ * degrees of all nodes keyed by node id
+ */
+let degree= {};
 
-    get outgoings(){
-        return outgoing[this.id];
-    }
+/**
+ * a class to store nodes of the dependency graph
+ * @class Node
+ */
+class Node {
+	/**
+	 * Node class constructor
+	 * @param {String} title title of the node
+	 * @param {Function} runFunc a function to run when node is visited
+	 */
+	constructor(title, runFunc) {
+		this.id = generateNewId();
+		this.title = title;
+		this.runFunc = runFunc;
+		degree[this.id] = 0;
+		nodes[this.id] = this;
+	}
 
-    get incomings(){
-        return incoming[this.id];
-    }
+	/**
+	 * resets the graph stored structures
+	 */
+	static reset() {
+		nodes = {};
+		outgoing = {};
+		incoming = {};
+		degree = {};
+		id = 0;
+	}
 
-    // get degree(){
-    //     return degree[this.id];
-    // }
+	/**
+	 * sets a new dependency link from this node to a given node
+	 * @param {Node} node a node of the dependency graph
+	 */
+	dependsOn(node) {
+		outgoing[this.id] = outgoing[this.id] || {};
 
-    static getAll(){
-        return _.values(nodes);
-    }
+		if (!outgoing[this.id][node.id]) {
+			outgoing[this.id][node.id] = node;
+			// only increase degree if link does not exist
+			degree[this.id] += 1;
+		}
 
-    static get nodes(){
-        return nodes;
-    }
+		incoming[node.id] = incoming[node.id] || {};
+		incoming[node.id][this.id] = this;
+	}
 
-    static get adjacents(){
-        return outgoing;
-    }
+	/**
+	 * gets all nodes of outgoing links from this node
+	 */
+	get outgoings() {
+		return _.values(outgoing[this.id]);
+	}
 
-    static get adjacentsReverse(){
-        return incoming;
-    }
+	/**
+	 * gets all nodes of incoming links to this node
+	 */
+	get incomings() {
+		return _.values(incoming[this.id]);
+	}
 
-    static get degree(){
-        return degree;
-    }
+	/**
+	 * gets the degree of outgoing links of this node
+	 */
+	get degree() {
+		return degree[this.id];
+	}
+
+	/**
+	 * @param  {Number} value degree of graph node
+	 */
+	set degree(value) {
+		degree[this.id] = value;
+	}
+
+	/**
+	 * returns all nodes added to the dependency graph
+	 * @return {Object} all nodes
+	 */
+	static getAll() {
+		return _.values(nodes);
+	}
 }
 
-module.exports= Node;
+/**
+ * generates a new unique id for the node created
+ * @return {Number} a new id
+ */
+function generateNewId() {
+	id += 1;
+	return id;
+}
+
+module.exports = Node;

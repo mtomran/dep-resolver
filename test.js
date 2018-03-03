@@ -1,6 +1,7 @@
 const depResolver= require("./app.js");
 console.log("Running Dependency Test..");
 Promise= require("bluebird");
+_= require("lodash");
 // const x= depResolver.addNode("x", function (){ return Promise.delay(500)} );
 // const y= depResolver.addNode("y", function (){ return Promise.delay(500)});
 // const z= depResolver.addNode("z", function (){ return Promise.delay(500)});
@@ -18,10 +19,10 @@ Promise= require("bluebird");
 
 const a= depResolver.addNode("a", function (){ return Promise.delay(5000)});
 const b= depResolver.addNode("b", function (){ return Promise.delay(5000)});
-const c= depResolver.addNode("c", function (){ return Promise.delay(5000)});
-const d= depResolver.addNode("d", function (){ return Promise.delay(5000)});
+const c= depResolver.addNode("c", function (){ return Promise.delay(1000)});
+const d= depResolver.addNode("d", function (){ return Promise.delay(1000)});
 const e= depResolver.addNode("e", function (){ return Promise.delay(5000)});
-const f= depResolver.addNode("f", function (){ return Promise.delay(2000)});
+const f= depResolver.addNode("f", function (){ return Promise.delay(5000)});
 const g= depResolver.addNode("g", function (){ return Promise.delay(5000)});
 a.dependsOn(b);
 a.dependsOn(c);
@@ -35,7 +36,7 @@ f.dependsOn(g);
 //g.dependsOn(c);
 depResolver.sortAll()
 .then((sorted)=>{
-    console.log("sorted list 2:", sorted);
+    console.log("sorted list 2:", _.map(sorted, "title"));
 });
 
 
