@@ -72,6 +72,7 @@ class Node {
 
 	/**
 	 * gets all nodes of outgoing links from this node
+	 * @return {Array} list of nodes of outging links from this node
 	 */
 	get outgoings() {
 		return _.values(outgoing[this.id]);
@@ -79,6 +80,7 @@ class Node {
 
 	/**
 	 * gets all nodes of incoming links to this node
+	 * @return {Array} list of nodes of incoming links to this node
 	 */
 	get incomings() {
 		return _.values(incoming[this.id]);
@@ -86,6 +88,7 @@ class Node {
 
 	/**
 	 * gets the degree of outgoing links of this node
+	 * @return {Number} number of outgoing links
 	 */
 	get degree() {
 		return degree[this.id];

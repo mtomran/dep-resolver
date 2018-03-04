@@ -1,21 +1,19 @@
 {
   "name": "dep-resolver",
-  "version": "1.0.0",
+  "version": "0.5.0",
   "description": "Asyncronous Dependency Resolver",
   "main": "app.js",
   "scripts": {
-    "test": "test.js"
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mtomran/dep-resolver.git"
   },
   "keywords": [
-    "async",
-    "asyncronous",
-    "dependency",
-    "resolver",
-    "resolve"
+    "async", "asyncronous", "dependency", "resolver", "resolve",
+    "promise", "directed", "acyclic", "graph", "DAG", "topological", "sort",
+    "order"
   ],
   "author": "Masoud Omran",
   "dependencies": {
