@@ -1,6 +1,5 @@
 # dep-resolver [![npm](http://img.shields.io/npm/v/dep-resolver.svg)](https://npmjs.org/package/dep-resolver) [![npm](http://img.shields.io/npm/dm/dep-resolver.svg)](https://npmjs.org/package/dep-resolver)
 
-# dep-resolver
 A modified version of Kahn's algorithm for topological sorting to resolve dependencies of asynchronous tasks. 
 
 # Description
