@@ -1,6 +1,6 @@
 {
   "name": "dep-resolver",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Asynchronous Dependency Resolver",
   "main": "app.js",
   "scripts": {
