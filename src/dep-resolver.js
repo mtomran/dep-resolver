@@ -50,7 +50,7 @@ class DepResolver {
 		 * @param {Array} visitedList list of nodes ready to be added to the sorted list
 		 */
 		function resolve(visitedList) {
-			return Promise.map(visitedList, (visited) => {
+			return bluebird.map(visitedList, (visited) => {
 				console.log(">>>", visited.title, "visited");
 
 				//making sure runFunc returns a promise
@@ -67,7 +67,7 @@ class DepResolver {
 					});
 
 					if (!visitedList.length) {
-						return Promise.resolve();
+						return bluebird.resolve();
 					} else {
 						return resolve(visitedList);
 					}
