@@ -57,17 +57,20 @@ class Node {
 	 * sets a new dependency link from this node to a given node
 	 * @param {Node} node a node of the dependency graph
 	 */
-	dependsOn(node) {
-		outgoing[this.id] = outgoing[this.id] || {};
+	dependsOn() {
+		const nodes= arguments;
+		_.each(nodes, node=>{
+			outgoing[this.id] = outgoing[this.id] || {};
 
-		if (!outgoing[this.id][node.id]) {
-			outgoing[this.id][node.id] = node;
-			// only increase degree if link does not exist
-			degree[this.id] += 1;
-		}
+			if (!outgoing[this.id][node.id]) {
+				outgoing[this.id][node.id] = node;
+				// only increase degree if link does not exist
+				degree[this.id] += 1;
+			}
 
-		incoming[node.id] = incoming[node.id] || {};
-		incoming[node.id][this.id] = this;
+			incoming[node.id] = incoming[node.id] || {};
+			incoming[node.id][this.id] = this;
+		});		
 	}
 
 	/**

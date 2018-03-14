@@ -24,14 +24,11 @@ const d= depResolver.addNode("d", function (){ return bluebird.delay(1000);});
 const e= depResolver.addNode("e", function (){ return bluebird.delay(5000);});
 const f= depResolver.addNode("f", function (){ return bluebird.delay(5000);});
 const g= depResolver.addNode("g", function (){ return bluebird.delay(5000);});
-a.dependsOn(b);
-a.dependsOn(c);
-a.dependsOn(e);
+a.dependsOn(b, c, a);
 b.dependsOn(e);
 c.dependsOn(d);
 d.dependsOn(g);
-e.dependsOn(d);
-e.dependsOn(f);
+e.dependsOn(d, f);
 f.dependsOn(g);
 //g.dependsOn(c);
 depResolver.sortAll()
